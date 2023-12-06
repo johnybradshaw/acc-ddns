@@ -8,4 +8,4 @@ RUN pip3 install -r requirements.txt
 COPY python/app/ app/
 EXPOSE 80 
 # Run the DDNS app
-CMD [ "gunicorn", "-b", "0.0.0.0:80", "app:create_app()", "-n", "ddns_acc"]
+CMD [ "gunicorn", "-b", "0.0.0.0:80", "--access-logfile", "-", "--error-logfile", "-", "app:create_app()", "-n", "ddns_acc"]

@@ -1,8 +1,7 @@
 from flask import jsonify, request
-import requests
-from .utils import generate_hash, validate_inputs
+import requests, logging
+from .utils import generate_hash, validate_inputs, logger
 from .config import secret_key, linode_api_key, domainId, headers, domain_get, domain_record_get, domain_record_create, domain_record_update
-#from .ddns import domain_record_get, domain_record_update
 
 # Assuming the createDDNS function and other route functions are here
 def createDDNS():
@@ -16,24 +15,25 @@ def createDDNS():
     # Validate the request data
     is_valid, message = validate_inputs(username, ip, client_hash)
     if not is_valid:
+        logger.error(f"Invalid request data: {message}")
         return jsonify({'error': message}), 400
 
     # Remove the hash from data to compare only the relevant parts
     data.pop('hash', None)
-    print(data)
+    logger.info(f"Request data: {data}")
 
     # Generate server-side hash
     server_hash = generate_hash((f"{data['username']}-{data['ip']}"), secret_key)
-    print(f"Client Hash: {client_hash}") # Print the client hash
-    print(f"Server Hash: {server_hash}") # Print the server hash
 
     # Compare client and server hashes
     if client_hash != server_hash:
+        logger.error(f"Hash mismatch: {client_hash} != {server_hash}")
         return jsonify({"error": "Hash mismatch"}), 400
 
     # Fetch existing DNS records
     get_response = requests.get(domain_record_get, headers=headers)
     if get_response.status_code != 200:
+        logger.error(f"Failed to fetch existing DNS records: {get_response.json()}")
         return jsonify({"error": "Failed to fetch existing DNS records"}), get_response.status_code
 
     # Get the existing records
@@ -61,7 +61,8 @@ def createDDNS():
         try:
             put_response = requests.put(put_url, json=payload, headers=headers)
             response_content = put_response.json()
-        except: 
+        except:
+            logger.error(f"Failed to update DNS record: {put_response.json()}") 
             return jsonify({"error": "Failed to update DNS record"}), 500
     else:
         try:
@@ -69,6 +70,7 @@ def createDDNS():
             post_response = requests.post(domain_record_create, json=payload, headers=headers)
             response_content = post_response.json()
         except:
+            logger.error(f"Failed to create DNS record: {post_response.json()}")
             return jsonify({"error": "Failed to create DNS record"}), 500
     
     # Return the response
@@ -91,6 +93,7 @@ def pingDDNS():
             return jsonify({"error": "Failed to fetch existing DNS records"}), get_response.status_code
         print(get_response.json())
     except:
+        logger.error(f"Failed to fetch existing DNS records: {get_response.json()}")
         return jsonify({"error": "Failed to fetch existing DNS records"}), 500
     
     return jsonify({"response": "pong"}), 200

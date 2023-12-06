@@ -1,6 +1,34 @@
 import hashlib
 import re
 import ipaddress
+import logging
+from logging.config import dictConfig
+
+# Logging configuration
+logging_config = dict(
+    version=1,
+    formatters={
+        'default': {
+            'format': '[%(asctime)s] [%(process)d] [%(levelname)s] %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S %z',
+        },
+    },
+    handlers={
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+            'stream': 'ext://sys.stdout',
+        },
+    },
+    root={
+        'level': 'INFO',
+        'handlers': ['console'],
+    },
+)
+
+dictConfig(logging_config)
+
+logger = logging.getLogger(__name__)
 
 # Function to generate a hash
 def generate_hash(data, secret_key):

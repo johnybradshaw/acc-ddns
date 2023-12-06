@@ -13,9 +13,9 @@ This code is provided as is, without warranty, and should not be used in a produ
 You can run the docker image by providing the following environment variables:
 
 ```bash
-SECRET_KEY=""
-LINODE_API_KEY=""
-DOMAIN_ID=0
+SECRET_KEY=
+LINODE_API_KEY=
+DOMAIN_ID=
 ```
 
 Run the container
