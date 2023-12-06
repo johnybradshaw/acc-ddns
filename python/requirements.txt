@@ -4,3 +4,4 @@ flask-security
 flask-wtf
 requests==2.31.0
 gunicorn==21.2.0
+werkzeug>=2.3.8 # not directly required, pinned by Snyk to avoid a vulnerability
