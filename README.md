@@ -21,7 +21,7 @@ DOMAIN_ID=0
 Run the container
 
 ```bash
-docker run --name ddns_acc --env-file=.env -p 80:8080 gchr.io:johnybradshaw/acc-ddns:latest
+docker run --name ddns_acc --env-file=.env -p 8000:80 ghcr.io/johnybradshaw/acc-ddns:latest
 ```
 
 ## API Endpoints
