@@ -23,7 +23,7 @@ DOMAIN_ID=
 Run the container
 
 ```bash
-docker run --name ddns_acc --env-file=.env -p 8000:80 ghcr.io/johnybradshaw/acc-ddns:latest
+docker run --name ddns_acc --env-file=.env -p 8000:8000 ghcr.io/johnybradshaw/acc-ddns:latest
 ```
 
 ## API Endpoints
@@ -33,7 +33,7 @@ docker run --name ddns_acc --env-file=.env -p 8000:80 ghcr.io/johnybradshaw/acc-
 The following is a properly formed request:
 
 ```bash
-curl -X "POST" "http://127.0.0.1:9001/create" \
+curl -X "POST" "http://127.0.0.1:8000/create" \
      -H 'Content-Type: application/json; charset=utf-8' \
      -d $'{
   "ip": "123.12.34.56",
