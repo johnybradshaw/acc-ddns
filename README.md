@@ -15,15 +15,51 @@ This code is provided as is, without warranty, and should not be used in a produ
 You can run the docker image by providing the following environment variables:
 
 ```bash
+# .env
 SECRET_KEY=
 LINODE_API_KEY=
 DOMAIN_ID=
+# Lumigo configuration (Optional)
+LUMIGO_TRACER_TOKEN=
+OTEL_SERVICE_NAME=
+AUTOWRAPT_BOOTSTRAP=
 ```
 
-Run the container
+### Run the container
 
 ```bash
-docker run --name ddns_acc --env-file=.env -p 8000:8000 ghcr.io/johnybradshaw/acc-ddns:latest
+docker run --name ddns_acc \
+  -e SECRET_KEY=VALUE \
+  -e LINODE_API_KEY=VALUE \
+  -e DOMAIN_ID=VALUE \
+  -e LUMIGO_TRACER_TOKEN= \
+  -e OTEL_SERVICE_NAME= \
+  -e AUTOWRAPT_BOOTSTRAP= \
+  -p 8000:8000 \
+  --restart-always \
+  -d \
+  ghcr.io/johnybradshaw/acc-ddns:latest
+```
+
+## Logging
+
+The application logs to `stdout` but can optionally be configured to emit traces to [Lumigo](https://platform.lumigo.io/) by updating the environment variables
+
+### Log Example
+
+#### Start up
+
+```bash
+[2023-12-07 14:33:06 +0000] [42622] [INFO] Initializing routes...
+[2023-12-07 14:33:06 +0000] [42622] [INFO] Secret key: abCD**** [8]
+[2023-12-07 14:33:06 +0000] [42622] [INFO] Linode API key: f222************************************************************ [64]
+[2023-12-07 14:33:06 +0000] [42622] [INFO] Domain ID: 1274*** [7]
+```
+
+#### Valid Request
+
+```bash
+[2023-12-07 14:33:09 +0000] [42623] [INFO] [127.0.0.1] Request data: {'username': 'username', 'ip': '123.12.34.56'}
 ```
 
 ## API Endpoints
@@ -36,10 +72,10 @@ The following is a properly formed request:
 curl -X "POST" "http://127.0.0.1:8000/create" \
      -H 'Content-Type: application/json; charset=utf-8' \
      -d $'{
-  "ip": "123.12.34.56",
-  "username": "username",
-  "hash": "d0cd7c6...067d"
-}'
+            "ip": "123.12.34.56",
+            "username": "username",
+            "hash": "d0cd7c6...067d"
+          }'
 ```
 
 #### Creating the hash
