@@ -104,6 +104,10 @@ def pingDDNS():
     
     return jsonify({"response": "pong"}), 200
 
+def livenessProbe():
+    logger.info(f"[{request.remote_addr}] Liveness probe")
+    return jsonify({"response": "OK"}), 200
+
 # Bind routes to app after function definitions
 def init_app(app):
     # Log the startup of the app
@@ -118,6 +122,10 @@ def init_app(app):
     app.add_url_rule('/update', view_func=updateDDNS, methods=['PUT'])
     # Bind the deleteDDNS function to the /delete route
     app.add_url_rule('/delete', view_func=deleteDDNS, methods=['DELETE'])
-    # Bind the pingDDNS function to the /ping route
+    # Bind the pingDDNS function to the /ping route (readiness probe)
     app.add_url_rule('/ping', view_func=pingDDNS, methods=['GET'])
+    # Bind a liveness probe to the / route (liveness probe)
+    app.add_url_rule('/', view_func=livenessProbe, methods=['GET'])
+    # Log the successful binding of routes
+    logger.info("Routes initialized")
 
