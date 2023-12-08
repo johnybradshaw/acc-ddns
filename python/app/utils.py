@@ -37,6 +37,10 @@ def generate_hash(data, secret_key):
     return hash_obj.hexdigest() # Return the hex digest of the hash object
 
 def validate_inputs(username, ip, hash_value):
+    # Check if username, ip, and hash_value are provided
+    if not username or not ip or not hash_value:
+        return False, "Missing inputs"
+
     # Validate username
     if not re.match("^[a-zA-Z0-9_-]*$", username):
         return False, "Invalid username"
