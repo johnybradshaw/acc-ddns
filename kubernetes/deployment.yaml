@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ddns-acc-deployment
+  namespace: ddns-acc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ddns-acc
+  template:
+    metadata:
+      labels:
+        app: ddns-acc
+    spec:
+      securityContext:
+        runAsUser: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+      # Create a tmp volume for the ddns-acc container to write to
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+      containers:
+      - name: ddns-acc
+        image: ghcr.io/johnybradshaw/acc-ddns:latest
+        imagePullPolicy: Always
+        # Security context for the container
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true # Prevents running as root
+          runAsUser: 10001
+          runAsGroup: 10001
+          capabilities:
+            drop:
+              - ALL
+        # Mount the tmp volume to the container
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+        ports:
+        - containerPort: 80
+        envFrom:
+          - secretRef:
+              name: ddns-acc # Use the secret created earlier
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        # Set the probes for the container
+        # Check the container is running
+        startupProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        # Check the liveness of the container
+        livenessProbe: # Check the / endpoint
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        # Check the /ping endpoint is responding
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 120
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3

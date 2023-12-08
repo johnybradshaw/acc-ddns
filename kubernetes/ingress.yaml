@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ddns-acc-ingress
+  namespace: ddns-acc
+  annotations:
+    cert-manager.io/issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/limit-rps: "5" # Max requests per second/IP
+    nginx.ingress.kubernetes.io/limit-rpm: "300" # Max requests per minute/IP
+    nginx.ingress.kubernetes.io/limit-connections: "10" # Max concurrent connections/IP
+    nginx.ingress.kubernetes.io/proxy-body-size: 1m # Max size of POST request 1MB
+spec:
+  ingressClassName: nginx
+  tls: 
+  - hosts:
+    - ddns.<<YOUR_DOMAIN>>
+    secretName: ddns-acc-cert
+  rules:
+  - host: ddns.<<YOUR_DOMAIN>>
+    http:
+      paths:
+      # Check if service is up
+      # - pathType: Prefix
+      #   path: "/"
+      #   backend:
+      #     service:
+      #       name: ddns-acc
+      #       port:
+      #         number: 80
+      # Check if service is up and connected to ACC APIs
+      - pathType: Prefix
+        path: "/ping"
+        backend:
+          service:
+            name: ddns-acc
+            port:
+              number: 80
+      # Create DDNS
+      - pathType: Prefix
+        path: "/create"
+        backend:
+          service:
+            name: ddns-acc
+            port:
+              number: 80

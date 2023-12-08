@@ -170,3 +170,6 @@ cython_debug/
 *.tf
 **/acc
 python/env
+acc/terraform.tfvars
+kubernetes/secrets.complete.yaml
+kubernetes/ingress.complete.yaml
