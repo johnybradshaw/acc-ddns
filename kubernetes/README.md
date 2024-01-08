@@ -31,6 +31,12 @@ Note: You can replace `ddns.` above if you wish to change or remove the sub-doma
 ```bash
 helm install --set 'args={--kubelet-insecure-tls}' --namespace metrics-server --create-namespace  metrics-server metrics-server/metrics-server
 ```
+### ExternalDNS
+
+```bash
+EXTERNALDNS=YOUR_LINODE_TOKEN #Domain scoped API token
+helm upgrade --install external-dns bitnami/external-dns --namespace external-dns --create-namespace  --set provider=linode  --set linode.apiToken=$EXTERNALDNS
+```
 
 ### NGINX
 

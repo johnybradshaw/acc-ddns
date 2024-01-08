@@ -9,6 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/limit-rpm: "300" # Max requests per minute/IP
     nginx.ingress.kubernetes.io/limit-connections: "10" # Max concurrent connections/IP
     nginx.ingress.kubernetes.io/proxy-body-size: 1m # Max size of POST request 1MB
+    external-dns.alpha.kubernetes.io/hostname: ddns.<<YOUR_DOMAIN>> # External DNS
 spec:
   ingressClassName: nginx
   tls: 
