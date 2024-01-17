@@ -7,13 +7,13 @@ from .config import secret_key, linode_api_key, domainId, headers, domain_get, d
 def createDDNS():
     # Get the request data
     data = request.get_json()
-    # Get the username and IP address from the request data
-    username = data['username']
+    # Get the subdomain and IP address from the request data
+    subdomain = data['subdomain']
     ip = data['ip']
     client_hash = data.get('hash')
 
     # Validate the request data
-    is_valid, message = validate_inputs(username, ip, client_hash)
+    is_valid, message = validate_inputs(subdomain, ip, client_hash)
     if not is_valid:
         logger.error(f"[{request.remote_addr}] Invalid request data: {message}")
         return jsonify({'error': message}), 400
@@ -23,7 +23,7 @@ def createDDNS():
     logger.info(f"[{request.remote_addr}] Request data: {data}")
 
     # Generate server-side hash
-    server_hash = generate_hash((f"{data['username']}-{data['ip']}"), secret_key)
+    server_hash = generate_hash((f"{data['subdomain']}-{data['ip']}"), secret_key)
 
     # Compare client and server hashes
     if client_hash != server_hash:
@@ -42,14 +42,14 @@ def createDDNS():
 
     # Check if the record already exists
     for record in existing_records:
-        if record['name'] == username and record['type'] == 'A':
+        if record['name'] == subdomain and record['type'] == 'A':
             record_id = record['id']
             break
 
     # Construct the request payload
     payload = {
         "type": "A",
-        "name": f"{username}",
+        "name": f"{subdomain}",
         "target": f"{ip}",
         "ttl_sec": 30
     }
@@ -76,7 +76,7 @@ def createDDNS():
             return jsonify({"error": "Failed to create DNS record"}), 500
     
     # Return the response
-    response_content.pop('name', None) # Remove the DDNS username from the response
+    response_content.pop('name', None) # Remove the DDNS subdomain from the response
     return jsonify({"response": response_content}), 200
 
 # Update the DDNS record

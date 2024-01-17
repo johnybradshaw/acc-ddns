@@ -59,7 +59,7 @@ The application logs to `stdout` but can optionally be configured to emit traces
 #### Valid Request
 
 ```bash
-[2023-12-07 14:33:09 +0000] [42623] [INFO] [127.0.0.1] Request data: {'username': 'username', 'ip': '123.12.34.56'}
+[2023-12-07 14:33:09 +0000] [42623] [INFO] [127.0.0.1] Request data: {'subdomain': 'subdomain', 'ip': '123.12.34.56'}
 ```
 
 ## API Endpoints
@@ -73,7 +73,7 @@ curl -X "POST" "http://127.0.0.1:8000/create" \
      -H 'Content-Type: application/json; charset=utf-8' \
      -d $'{
             "ip": "123.12.34.56",
-            "username": "username",
+            "subdomain": "subdomain",
             "hash": "d0cd7c6...067d"
           }'
 ```
@@ -84,7 +84,7 @@ A hash must be passed with each request to validate the message. It is formed of
 
 ```bash
 #pseudocode
-sha256("${username}-${$ip}-${secret}")
+sha256("${subdomain}-${$ip}-${secret}")
 ```
 
 ### DDNS Record Create/Update
@@ -95,7 +95,7 @@ sha256("${username}-${$ip}-${secret}")
 
 ```json
 {
-  "username": "username",
+  "subdomain": "subdomain",
   "ip": "123.12.34.56",
   "hash": "d0cd...067d"
 }

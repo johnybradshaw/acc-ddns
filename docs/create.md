@@ -14,7 +14,7 @@
 
 ```json
 {
-    "username": "username",
+    "subdomain": "subdomain",
     "ip": "123.12.34.56",
     "hash": "d0cd7c6fc3064382cd68e235e98c2793a2c34880b546bafaf8928f4eb24c067d"
 }
