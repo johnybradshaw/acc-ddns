@@ -1,6 +1,7 @@
 # DDNS on Akamai Connected Cloud
 
 [![Docker](https://github.com/johnybradshaw/acc-ddns/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/johnybradshaw/acc-ddns/actions/workflows/docker-publish.yml)
+[![Snyk Security](https://github.com/johnybradshaw/acc-ddns/actions/workflows/snyk-security.yml/badge.svg)](https://github.com/johnybradshaw/acc-ddns/actions/workflows/snyk-security.yml)
 
 This is a small Dynamic DNS Server (DDNS) that can be used for labs and demos. It will create DNS A records in a second Akamai Connected Cloud account pointing to a specific IP.
 
