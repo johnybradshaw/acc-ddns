@@ -6,9 +6,15 @@ on:
     branches: ["main"]
 permissions:
   actions: read
+  security-events: write
 jobs:
   security:
     runs-on: ubuntu-latest
+    permissions:
+      # required for all workflows
+      security-events: write
+      actions: read
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
