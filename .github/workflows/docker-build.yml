@@ -24,7 +24,6 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          sarif: true
           args: --sarif-file-output=snyk.sarif
           
       # - name: App - Upload result to GitHub Code Scanning
@@ -44,7 +43,6 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ github.repository }}
-          sarif: true
           args: --file=Dockerfile
           
       # - name: Docker - Upload result to GitHub Code Scanning
