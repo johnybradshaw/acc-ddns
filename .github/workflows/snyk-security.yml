@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
 jobs:
   snyk:
     permissions:
@@ -21,18 +24,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Snyk CLI to check for security issues
-        # Snyk can be used to break the build when it detects security issues.
-        # In this case we want to upload the SAST issues to GitHub Code Scanning
         uses: snyk/actions/setup@master
-        env:
-          # This is where you will need to introduce the Snyk API token created with your Snyk account
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
       - name: Snyk Code test
         run: snyk code test --sarif --sarif-file-output=snyk-code.sarif || true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       # Runs Snyk Open Source (SCA) analysis and uploads result to Snyk.
       - name: Snyk Open Source monitor
