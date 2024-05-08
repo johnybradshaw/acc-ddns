@@ -3,7 +3,8 @@ name: build-attested-image
 on:
   push:
     branches: [main]
-
+permissions:
+  actions: read
 jobs:
   build:
     runs-on: ubuntu-latest
