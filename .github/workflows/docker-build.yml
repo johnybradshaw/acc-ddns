@@ -32,7 +32,7 @@ jobs:
       #     sarif_file: snyk.sarif
 
       - name: Build a Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}  .
+        run: docker build -t your/image-to-test  .
         
       - name: Docker - Run Snyk to check Docker image for vulnerabilities
         # Snyk can be used to break the build when it detects vulnerabilities.
