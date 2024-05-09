@@ -56,12 +56,5 @@ helm install cert-manager cert-manager \
 ## Install DDNS
 
 ```bash
-kubectl apply -f namespace.yaml \
--f secrets.yaml \
--f ingressClass.yaml \
--f ingress.yaml \
--f deployment.yaml \
--f hpa.yaml \
--f service.yaml \
--f issuer.yaml
+kubectl apply -f .
 ```
