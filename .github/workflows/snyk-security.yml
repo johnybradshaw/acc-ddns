@@ -11,11 +11,11 @@ on:
 permissions:
   contents: read
 
-env:
-  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
 jobs:
   snyk:
+    # Environment variables required for Snyk to run
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     # Permissions required for Snyk to run
     permissions:
       contents: read # for actions/checkout to fetch code
