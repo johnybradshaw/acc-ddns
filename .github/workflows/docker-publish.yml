@@ -10,6 +10,9 @@ on:
     branches: [ "main" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
+    paths: 
+      - 'Dockerfile'
+      - 'python/**'
   pull_request:
     branches: [ "main" ]
 
