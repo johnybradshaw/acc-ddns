@@ -173,3 +173,4 @@ python/env
 acc/terraform.tfvars
 kubernetes/secrets.complete.yaml
 kubernetes/ingress.complete.yaml
+.DS_Store
