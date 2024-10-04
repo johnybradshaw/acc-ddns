@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - 'python/**'
+      - 'python/**.py'
+      - 'python/requirements.txt'
   schedule:
     - cron: '21 9 * * 3' # At 9:19 on Wednesday
   workflow_dispatch:

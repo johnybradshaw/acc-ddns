@@ -8,6 +8,8 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ "main" ]
+    paths: 
+      - 'Dockerfile'
   schedule:
     - cron: '19 9 * * 3'
   workflow_dispatch:
