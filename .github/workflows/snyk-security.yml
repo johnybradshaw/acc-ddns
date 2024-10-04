@@ -3,8 +3,11 @@ name: Snyk Python Scan
 on:
   pull_request:
     branches: ["main"]
+    paths:
+      - 'python/**'
   schedule:
     - cron: '21 9 * * 3' # At 9:19 on Wednesday
+  workflow_dispatch:
 
 permissions:
   contents: read

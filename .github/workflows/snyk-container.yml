@@ -10,6 +10,7 @@ on:
     branches: [ "main" ]
   schedule:
     - cron: '19 9 * * 3'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -36,7 +37,7 @@ jobs:
       
     # Build the Docker image for testing
     - name: Build a Docker image
-      run: docker build -t your/image-to-test .
+      run: docker build -t ${{ github.repository }} .
 
     # Runs Snyk Container (Container and SCA) analysis and uploads result to Snyk.
     - name: Run Snyk to check Docker image for vulnerabilities
@@ -47,7 +48,7 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: your/image-to-test
+        image: ${{ github.repository }}
         args: --file=Dockerfile
 
     # Upload result to GitHub Code Scanning
