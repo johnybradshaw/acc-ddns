@@ -5,7 +5,7 @@ on:
       branches: [ "main" ]
       paths: 
         - 'Dockerfile'
-        - 'python/**.py'
+        - 'python/**/*.py'
         - 'python/requirements.txt'
       tags: [ 'v*.*.*' ]
     pull_request:
@@ -57,9 +57,20 @@ jobs:
       - name: Set up Snyk CLI to check for security issues
         uses: snyk/actions/setup@master
 
+      # Install Python and grab dependencies
+      - name: Setup Python environment
+        uses: actions/setup-python@v5
+        with:
+          cache: 'pip'
+      - run: pip install -r python/requirements.txt
+
       # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
-      - name: Snyk Code test
-        run: snyk code test --sarif --sarif-file-output=snyk-code.sarif || true
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --sarif-file-output=snyk-code.sarif
 
       # Push the Snyk Code results into GitHub Code Scanning tab
       - name: Upload result to GitHub Code Scanning
@@ -103,6 +114,7 @@ jobs:
         with:
           image: ${{ github.repository }}
           args: --file=Dockerfile
+          sarif_file: snyk.sarif
 
       # Upload result to GitHub Code Scanning
       - name: Upload result to GitHub Code Scanning
