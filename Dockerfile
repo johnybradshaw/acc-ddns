@@ -1,4 +1,4 @@
-FROM python:3.14.0a1-alpine3.19
+FROM python:3.14.0a2-alpine3.19
 # Update the system
 RUN apk update && apk upgrade
 WORKDIR /app
