@@ -65,9 +65,7 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        run: |
-          cd python
-          pip install -r requirements.txt
+        run: pip install -r python/requirements.txt
 
       # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
       - name: Run Snyk to check for vulnerabilities
@@ -75,7 +73,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high --sarif-file-output=snyk-code.sarif ./python
+          args: --severity-threshold=high --sarif-file-output=snyk-code.sarif --file=python/requirements.txt
 
       # Push the Snyk Code results into GitHub Code Scanning tab
       - name: Upload result to GitHub Code Scanning
