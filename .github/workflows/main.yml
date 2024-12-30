@@ -62,7 +62,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           cache: 'pip'
-      - run: pip install -r python/requirements.txt
+      - run: pip install -r requirements.txt
+        working-directory: python
 
       # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
       - name: Run Snyk to check for vulnerabilities
