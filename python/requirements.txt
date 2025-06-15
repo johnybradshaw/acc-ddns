@@ -10,7 +10,7 @@ Jinja2==3.1.5
 MarkupSafe==3.0.2
 packaging==24.2
 python-dotenv==1.0.1
-requests==2.32.3
+requests==2.32.4
 gunicorn==23.0.0
 werkzeug>=2.3.8 # not directly required, pinned by Snyk to avoid a vulnerability
 lumigo_opentelemetry
