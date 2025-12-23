@@ -112,10 +112,10 @@ def livenessProbe():
 def init_app(app):
     # Log the startup of the app
     logger.info("Initializing routes...")
-    # Log the secret key, Linode API key, and domain ID but hide most of the characters
-    logger.info(f"Secret key: {secret_key[:4]}{'*'*(len(secret_key)-4)} [{len(secret_key)}]")
-    logger.info(f"Linode API key: {linode_api_key[:4]}{'*'*(len(linode_api_key)-4)} [{len(linode_api_key)}]")
-    logger.info(f"Domain ID: {domainId[:4]}{'*'*(len(domainId)-4)} [{len(domainId)}]")
+    # Log whether key configuration values are set, without exposing their contents
+    logger.info("Secret key configured: %s", bool(secret_key))
+    logger.info("Linode API key configured: %s", bool(linode_api_key))
+    logger.info("Domain ID configured: %s", bool(domainId))
     # Bind the createDDNS function to the /create route
     app.add_url_rule('/create', view_func=createDDNS, methods=['POST'])
     # Bind the updateDDNS function to the /update route
