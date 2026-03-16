@@ -1,6 +1,6 @@
 blinker>=1.8.2
 certifi==2026.1.4
-charset-normalizer==3.4.4
+charset-normalizer==3.4.6
 click==8.3.1
 Flask==3.1.2
 gunicorn==25.1.0
